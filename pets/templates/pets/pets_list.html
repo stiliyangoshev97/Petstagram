@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load inclusion_tags %}
+
+{% block content %}
+<div class="container" style="margin-bottom: 10px;">
+    {% count_pets %}
+    <p>Owned pets: <b>{{ owned_pets }}</b></p>
+    <div class="row">
+        {% for pet in pets %}
+            <div class="col-xs-7 col-sm-6 col-lg-8"  style="border: 1px solid black;">
+                <img class="animal_image" src="{{ pet.image.url }}">
+            </div>
+              <div class="col-sm-4"  style="border: 1px solid black;">
+                <div class="col-sm-4">
+                    <span class="text-pet"><p>Pet Name: <b>{{ pet.name }}</b></span>
+                </div>
+                  <div class="col-sm-4">
+                    <a href="{% url 'pets:pet_details' pet.id %}"><button class="btn btn-info">Details</button></a>
+                  </div>
+            </div>
+        {% endfor %}
+
+
+
+
+    </div>
+</div>
+
+
+{% endblock %}

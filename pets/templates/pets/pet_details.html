@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load inclusion_tags %}
+
+{% block content %}
+<div class="container" style="margin-bottom: 10px;">
+    <div class="row">
+
+            <div class="col-xs-7"  style="border: 1px solid black;">
+                <img class="animal_image" src="{{ pet.image.url }}">
+            </div>
+              <div class="col-xs-7"  style="border: 1px solid black;">
+                <div class="col-sm-4">
+                    <span class="text-pet"><p>Pet Name: <b>{{ pet.name }}</b></span>
+                    <span class="text-pet"><p>Pet Age: <b>{{ pet.age }}</b></span>
+                    <span class="text-pet"><p>Pet Description: <b>{{ pet.description }}</b></span>
+                    <span class="text-pet"><p>Pet Owner: <b>{{ pet.user.email }}</b></span>
+                </div>
+                  <div class="col-sm-4">
+                    <span class="text-pet"><p>Pet Likes: <b>{{ likes_count }}</b></span>
+                      {% if not is_owner %}
+
+                      <!-- Like form -->
+                          {% if not is_liked %}
+                          <form method="POST" action="{% url 'pets:pet_details' pet.id %}">
+                              {% csrf_token %}
+                              {% bootstrap_form like_form %}
+                             <button type="submit" class="btn btn-link"><img src="{% static 'pets/like.webp' %}" style="height: 50px; width: 50px;"></button>
+                          </form>
+                      {% else %}
+                        <a href="{% url 'pets:dislike_pet' pet.id %}"><button class="btn btn-link"><img src="{% static 'pets/unlike.png' %}" style="height: 50px; width: 50px;"></button></a>
+
+
+
+                          {% endif %}
+
+                      <br>
+                      {% endif %}
+
+
+                      <div class="comments col-xs-7">
+
+                          <h4>Comments <b>({{ total_comments }})</b></h4><br>
+                          <p>Comments written by you: <b>{{ owned_comments }}</b></p>
+                          {% for comment_pet in comments_pet %}
+                          {{ comment_pet.user.email }}: <b>{{ comment_pet.text }}</b><br>
+                          {% endfor %}
+                      </div>
+                      <!-- Create a comment -->
+                      {% if not is_owner %}
+                      <form method="POST" action="{% url 'pets:pet_details' pet.id %}">
+                          {% csrf_token %}
+                          {% bootstrap_form comment_form %}
+                         <button type="submit" class="btn btn-light">Comment</button>
+                      </form>
+                      {% endif %}
+                      <br>
+
+                  </div><br>
+                  {% if is_owner %}
+                  <div class="col-sm-4" style="margin-bottom: 16px;">
+                   <a href="{% url 'pets:edit_pet' pet.id %}"><button class="btn btn-success">Edit</button></a>
+                      <a href="{% url 'pets:remove_pet' pet.id %}"><button class="btn btn-danger">Remove</button></a>
+                  </div>
+                  {% endif %}
+
+            </div>
+
+
+
+
+
+    </div>
+</div>
+
+{% endblock %}
