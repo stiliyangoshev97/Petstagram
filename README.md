@@ -1,2 +1,1 @@
-# Petstagram
- 
+I have created a project where people can post their pets and other people can like them and comment them. Owners cannot like or comment their own pets, but can edit or delete them. There is a custom user model created and the login works with the email instead of username
